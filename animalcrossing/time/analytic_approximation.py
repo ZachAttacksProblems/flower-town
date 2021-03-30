@@ -1,15 +1,49 @@
+"""
+Module which defines the ApproximatePMF class 
+and some helper functions for it. 
+
+Used to analytically extend and approximate the 
+numerically intractable probability mass function (PMF)
+for the question what's the probability of 
+breeding a flower X from two parent's in AC:HN on a certain day, but 
+NOT before. 
+
+Maybe should fix the way ApproximatePMF.__init__ handles some fields that 
+a caller doesn't want to setup themselves.
+Currently, module level "factory" method 'create_approximate_pmf(px, days, probabilities, day_cut=40)'
+accomplishes this. 
+"""
 import pandas as pd
 import numpy as np
 import scipy.optimize
 import scipy.stats
 import scipy.special
-import matplotlib.pyplot as plt
+
 import collections
 from dataclasses import dataclass, field
 import itertools
 
 @dataclass
 class ApproximatePMF:
+    """The two parents have probability px of producing a child
+    every time they breed. Is callable with single arg day, e.g.
+    approxPMF(5) = 0.25.
+    
+    MUST be able to find and load ""ProbabilityMassFunctions.csv""
+    TO DO fix import as a resource/as part of animalcrossing module. 
+    
+    The probability of producing child X on a certain day, but not 
+    before is calculated exactly up to a certain number of days
+    (at least 40) and continued exactly after the last 
+    day using a fit exponential of the form exp(-m*d+c) where 
+    m and c are fit constants and d is the day. 
+    
+    Useful to answer the question "How long do I expect to 
+    have to wait before producing a flower of a specific color
+    from two parents?"
+    
+    
+    """
     px: float
     slope: float
     intercept: float
@@ -80,6 +114,7 @@ def load():
     return pmfs
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
     probs_file = "ProbabilityMassFunctions.csv"
     df = pd.read_csv(probs_file, index_col='Day')
     print(df)

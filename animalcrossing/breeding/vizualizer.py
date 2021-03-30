@@ -1,3 +1,17 @@
+"""
+Helper/wrapper class which makes plotting 
+a DiGraph using graphviz in the context 
+that the DiGraph models a Family Tree easier.
+
+Attempts to be generic and offer support for rendering labels 
+and colors by defining "hooks" or class members which 
+can be set to customized functions.
+
+When called as a main/script (from this folder as if not part of the animal crossing package, i.e. 
+when called as python vizualizer.py)
+it imports the FamilyTree class defined in this folder, constructs a sample tree and renders 
+the pdf and opens it in the default viewer.
+"""
 from graphviz import Digraph
 
 class FamilyTreeGraph:
@@ -11,6 +25,14 @@ class FamilyTreeGraph:
         self.graph = None
 
     def make_graph(self, path, view=True, method="simple"):
+        """Render the graph as a pdf.
+        
+        Keword args:
+        path -- full file path to save the resulting pdf (can optionally include ".pdf").
+        view -- boolean, if True opens pdf in OS's default viewer. 
+        method -- 'simple' or 'diamond', if 'diamond' the two parents are connected to a child 
+                  through an intermdiate, unlabelled diamond.
+        """
         self.graph = Digraph(comment=self.tree_name)
         self.graph.attr(label=self.tree_name)
 

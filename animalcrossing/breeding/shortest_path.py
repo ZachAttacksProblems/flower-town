@@ -1,3 +1,8 @@
+"""
+Work in progress!
+
+Exploratory methods for determining best/shortest path to certain flower colors. 
+"""
 from ..flowers.species import Species
 from ..flowers.flower import Flower
 from animalcrossing.breeding.probability_chain import ProbabilityChain

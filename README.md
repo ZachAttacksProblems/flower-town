@@ -20,7 +20,7 @@ I found particulary helpful were:
 - Yue's acnh guide (https://yuexr.github.io/acnh/bluerose.html)
 - Aeon's (and contributors) Flower Breeding Simulator (https://gardenscience.ac/)
 - cestislife's visual guides (https://cestislife.github.io/)
-- the [Google Sheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vTdwUI4iZE1wdfZv1xdi2qJtldnWS2iiQdjRjKP-4oKoH0R8a07vaVFxZHSwFiDlwzb6gZAE8U5C_vG/pubhtml#) with the datamined FgFlowerHeredity table
+- This [Google Sheet](https://docs.google.com/spreadsheets/d/e/2PACX-1vTdwUI4iZE1wdfZv1xdi2qJtldnWS2iiQdjRjKP-4oKoH0R8a07vaVFxZHSwFiDlwzb6gZAE8U5C_vG/pubhtml#) with the datamined FgFlowerHeredity table
 
 ## Current State
 This is a work in progress and is mostly just for myself. Currently the 

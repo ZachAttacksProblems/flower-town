@@ -1,3 +1,11 @@
+"""
+Module which defines an Enum of all possible
+flower colors in Animal Crossing: New Horizons.
+
+Inherits Enum and has the following nine (9) colors:
+Blue, Red, Yellow, White, Pink, Orange, Purple, Black, and Green.
+Their ordering is arbitrary.
+"""
 from enum import Enum, auto
 
 

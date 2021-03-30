@@ -1,3 +1,12 @@
+"""
+Module which models the different probabilities from 
+breeding two parents together.
+
+Uses networkx as the graph data structure and graphviz for visualization. 
+
+Running this as a main/script will run a test and render the results as 
+a pdf. 
+"""
 import networkx
 from ..flowers.flower import Flower
 from ..flowers.species import Species
@@ -90,6 +99,7 @@ class ProbabilityChain:
 
 
     def flower_nodes(self) -> list[Flower]:
+        """Returns list of nodes are flower objects."""
         return ProbabilityChain._flower_nodes(self.graph)
     @staticmethod
     def _flower_nodes(graph:networkx.DiGraph) -> list[Flower]:
@@ -99,6 +109,7 @@ class ProbabilityChain:
         return ns
 
     def couple_nodes(self) -> list[tuple[Flower, Flower]]:
+        """Returns list of nodes which are a length two tuple of flower objects representing breeding pairs."""
         return ProbabilityChain._couple_nodes(self.graph)
     @staticmethod
     def _couple_nodes(graph:networkx.DiGraph) -> list[tuple[Flower, Flower]]:
@@ -108,6 +119,7 @@ class ProbabilityChain:
         return ns
 
     def couple_edges(self) -> list[tuple[Flower, tuple[Flower, Flower]]]:
+        """Return edges from flowers to pair nodes."""
         return ProbabilityChain._couple_edges(self.graph)
     @staticmethod
     def _couple_edges(graph:networkx.DiGraph) -> list[tuple[Flower,tuple[Flower, Flower]]]:
@@ -117,6 +129,7 @@ class ProbabilityChain:
         return es
 
     def prob_edges(self) -> list[tuple[tuple[Flower, Flower], Flower]]:
+        """Return edges from pairs to children (which have breeding probabilities as weights)."""
         return ProbabilityChain._prob_edges(self.graph)
     @staticmethod
     def _prob_edges(graph:networkx.DiGraph) -> list[tuple[tuple[Flower, Flower], Flower]]:
@@ -126,20 +139,24 @@ class ProbabilityChain:
         return es
 
     def seed_colors(self) -> set[FlowerColor]:
+        """Returns a set of the colors of the seed flowers for this species of this current chain."""
         seeds = Flower.seeds(self.species)
         return {seed.color for seed in seeds}
 
     def easy_colors(self) -> set[FlowerColor]:
+        """Colors for this species which care available after 1 generation."""
         sub_graph = self.up_to_gen_x(1)
         flowers = ProbabilityChain._flower_nodes(sub_graph)
         return {flower.color for flower in flowers}
 
     def hard_colors(self):
+        """Colors for this species which require multi-generational breeding."""
         all_colors = set(Flower.colors(self.species))
         return all_colors - self.easy_colors()
 
 
     def render(self, path, view=True):
+        """Render this function using networkx. Creates a pdf at path location, if view is True also opens in OS's default viewer."""
         chain = self
         dot = graphviz.Digraph(comment="Probability Chain Graph")
         dot.attr(

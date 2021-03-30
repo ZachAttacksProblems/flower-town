@@ -1,3 +1,19 @@
+"""
+Module which defines a Parent (Node) and a FamilyTree 
+meant to model/store the relationship between breeding 
+pairs of objects. 
+
+Development was meant to be generic, but was written in mind
+to model Flowers from AC:NH breeding with each other 
+to produce different children. This means parents will create 
+children with multiple other node members (Parents) and 
+may breed with its own descendants several times. 
+
+Running as a main/script will create an example family tree
+and print out information about the growth and state 
+of the tree. 
+
+"""
 from __future__ import annotations
 import warnings
 
@@ -89,7 +105,15 @@ class Parent:
 
 
 class Coupling:
-
+    """
+    Named container for a parent and child. 
+    
+    Meant as an object that a each parent can have to 
+    reference what children they have made with 
+    a second parent. 
+    
+    (Could be a namedtuple from the standard library).
+    """
     def __init__(self, parent, child):
         self.partner = parent
         self.child = child

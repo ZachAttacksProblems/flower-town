@@ -1,3 +1,11 @@
+"""
+Main script for testing graphviz.
+
+Basic work for creating a family tree with 
+an intermediate diamond was sketched out here. 
+
+Should be removed from package. 
+"""
 from graphviz import Digraph
 
 

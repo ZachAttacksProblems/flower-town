@@ -1,7 +1,14 @@
-from flowers.flower import Flower
-from flowers.species import Species
-from flowers.genes import Gene
-from flowers.color import FlowerColor
+"""
+Script which constructs some test flowers 
+using multiple construction methods from the 
+and prints the output/results of breeding certain flowers together.
+
+Serves as a short (informal) test for the animalcrossing.flower package.
+"""
+from animalcrossing.flowers.flower import Flower
+from animalcrossing.flowers.species import Species
+from animalcrossing.flowers.genes import Gene
+from animalcrossing.flowers.color import FlowerColor
 from collections import Counter
 
 

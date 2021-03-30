@@ -1,3 +1,22 @@
+"""
+Module which defines the class Flower and holds 
+data tables for genotype and phenotype mapping. 
+
+The flower class models state and behaviour of a
+a flower from Animal Crossing: New Horizons.
+
+The module references a .xlsx spreadsheet which defines phenotypes and 
+genotypes for different flowers from several plant species. It also 
+lists which flowers can be purchased as seeds from Nook's Cranny 
+or Leif in-game. The table is loaded after calling the module's init() method
+or implicitly (if flower.implicit_init is True) the first time the table 
+needs to be referenced for a lookup.
+
+Invoking this module as a script will print out the 
+possible color options and seed flowers by species. 
+
+"""
+import importlib.resources
 from dataclasses import dataclass
 from .species import Species
 from .genes import Gene
@@ -6,10 +25,13 @@ import pandas as pd
 import re
 import itertools
 
+#_table_path = r".\animalcrossing\resources\FlowerGenes.xlsx"
+_resource_package = "animalcrossing.resources"
+_resource_name = "FlowerGenes.xlsx"
+_gene_table = None
+_gene_map = None 
+implicit_init = True
 
-
-_table_path = r"C:\Users\zacha\Documents\AnimalCrossing\FlowerGenes.xlsx"
-_gene_table = pd.read_excel(_table_path)
 def _convert_types(row):
     species = Species[row["Species"].upper()]  # species specified as text
     g1 = Gene(row["Gene 1"])  # genes specified in table as integers
@@ -22,21 +44,41 @@ def _convert_types(row):
     else:
         key = (species, g1, g2, g3)
     return [key, color]
-qq = _gene_table.apply(_convert_types, axis=1, result_type="expand").rename(columns={0: "Key", 1: "ColorValue"})
-_gene_table[["Key", "ColorValue"]] = qq
-_gene_map = {k: v for k, v in zip(_gene_table['Key'], _gene_table['ColorValue'])}
+
+def init():
+    global _gene_map, _gene_table
+    #_gene_table = pd.read_excel(_table_path, skiprows=2)
+    with importlib.resources.open_binary(_resource_package, _resource_name) as excel_file:
+        _gene_table = pd.read_excel(excel_file, skiprows=2)
+    qq = _gene_table.apply(_convert_types, axis=1, result_type="expand").rename(columns={0: "Key", 1: "ColorValue"})
+    _gene_table[["Key", "ColorValue"]] = qq
+    _gene_map = {k: v for k, v in zip(_gene_table['Key'], _gene_table['ColorValue'])}
+
 def _resolve_color(species, genes) -> FlowerColor:
+    if implicit_init and not _gene_map:
+        init()
     return _gene_map[(species, *genes)]
 
 def _species_seeds(species):
+    if implicit_init and not _gene_map:
+        init()
     t = _gene_table.loc[(_gene_table['Species'].str.upper() == species.name) & (_gene_table['Seed Bag'] == 1), "Key"]
     return t.values
 
 def _species_colors(species):
+    if implicit_init and not _gene_table:
+        init()
     return set(_gene_table.loc[(_gene_table['Species'].str.upper() == species.name), "ColorValue"].values)
 
 @dataclass(frozen=True)
 class Flower:
+    """
+    Flower which models the genes and colors of the difference species in AC:NH.
+    
+    Flower is an immutable object which stores species:Species, genes:tuple[Gene], and color:FlowerColor
+    of a flower. The genes are a length 3 tuple for all species except roses which are a 
+    length 4 tuple. 
+    """
     species: Species
     genes: tuple[Gene]
     color: FlowerColor

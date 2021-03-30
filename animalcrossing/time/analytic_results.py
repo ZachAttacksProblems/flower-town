@@ -1,3 +1,7 @@
+"""
+Collection of some analytical 
+probability calculations. 
+"""
 from collections import Counter, namedtuple
 import itertools
 import random
